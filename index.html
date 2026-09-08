@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="uk">
 <head>
@@ -553,9 +554,13 @@ async function loadRemoteConfig(){
     done = true;
     if(cfg && typeof cfg === "object"){
       Object.keys(cfg).forEach(k=>{
-        if(cfg[k] === undefined) return;
+        if(cfg[k] === undefined || cfg[k] === null) return;
         if(k === "images" && cfg.images && typeof cfg.images === "object"){
           SITE.images = Object.assign({}, SITE.images, cfg.images);
+        } else if(/^image_(hero|bottle|card1|card2|card3)$/.test(k) && typeof cfg[k] === "string" && cfg[k]) {
+          const slot = k.slice(6);
+          SITE.images = SITE.images || {};
+          SITE.images[slot] = cfg[k] + (cfg[k].includes("?") ? "&" : "?") + "v=" + Date.now();
         } else {
           SITE[k] = cfg[k];
         }
