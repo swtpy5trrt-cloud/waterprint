@@ -68,7 +68,7 @@ select:focus,.qtyInput:focus,.formInput:focus{border-color:#1698ff}
 .modalBox h3{margin:0 35px 5px 0;font-size:25px}.modalSub{margin:0 0 17px;color:#78818d;font-size:13px;line-height:1.5}
 .formGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.formField.full{grid-column:1/-1}
 .payment{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.payOption{border:1px solid #dfe5ea;border-radius:11px;padding:11px;cursor:pointer;background:#fff;font-size:12px;font-weight:700}.payOption input{display:none}.payOption.active{border-color:#1698ff;background:#eef8ff;color:#0e83da}
-.formNote{font-size:11px;color:#7c8691;line-height:1.45;margin:10px 0}
+.formNote{font-size:11px;color:#7c8691;line-height:1.45;margin:10px 0}.orderSummary{display:flex;justify-content:space-between;align-items:center;background:#eef8ff;border-radius:12px;padding:12px 13px;margin:14px 0;font-weight:800}.orderSummary strong{color:#1592ee;font-size:22px}
 .success{padding:18px;border-radius:15px;background:#effbf3;border:1px solid #bde9c9;color:#1f6e35;font-size:13px;line-height:1.55;display:none}
 .error{padding:12px;border-radius:12px;background:#fff0f0;border:1px solid #f1baba;color:#9e3030;font-size:12px;display:none;margin-top:10px}
 
@@ -153,7 +153,7 @@ select:focus,.qtyInput:focus,.formInput:focus{border-color:#1698ff}
    <div class="field"><label id="waterLabel"></label><select id="water"></select></div>
    <div class="field"><label id="labelLabel"></label><select id="labelType"></select></div>
    <div class="field"><label id="countLabel"></label>
-    <div class="qtyRow"><button type="button" id="minus">−</button><input class="qtyInput" id="count" type="number" min="100" step="100" value="500"><button type="button" id="plus">+</button></div>
+    <div class="qtyRow"><button type="button" id="minus">−</button><input class="qtyInput" id="count" type="number" min="10" step="1" value="10"><button type="button" id="plus">+</button></div>
    </div>
    <div class="total"><span id="totalText"></span><strong id="price"></strong></div>
    <button class="btn primary" style="width:100%" id="orderBtn"></button>
@@ -232,7 +232,10 @@ select:focus,.qtyInput:focus,.formInput:focus{border-color:#1698ff}
     <div class="formField"><label id="phoneLabel"></label><input class="formInput" name="phone" id="phone" required></div>
     <div class="formField full"><label id="emailLabel"></label><input class="formInput" type="email" name="email" id="email" required></div>
     <div class="formField"><label id="cityLabel"></label><input class="formInput" name="city" id="city"></div>
-    <div class="formField"><label id="quantityLabel"></label><input class="formInput" name="quantity" id="formQuantity" readonly></div>
+    <div class="formField">
+     <label id="quantityLabel"></label>
+     <input class="formInput" name="quantity" id="formQuantity" type="number" min="10" step="1" value="10" inputmode="numeric">
+    </div>
     <div class="formField full">
      <label id="paymentLabel"></label>
      <div class="payment" id="paymentOptions"></div>
@@ -242,6 +245,7 @@ select:focus,.qtyInput:focus,.formInput:focus{border-color:#1698ff}
     <input type="hidden" name="label_type" id="formLabel">
     <input type="hidden" name="total" id="formTotal">
    </div>
+   <div class="orderSummary"><span>Разом</span><strong id="orderModalPrice">₴0</strong></div>
    <div class="formNote" id="paymentNote"></div>
    <button class="btn primary" style="width:100%" type="submit" id="submitOrder"></button>
    <div class="success" id="orderSuccess"></div>
@@ -349,8 +353,8 @@ const SITE = {
     ["Базова етикетка", 0],
     ["Преміум етикетка + ₴2", 2]
   ],
-  minQuantity: 100,
-  quantityStep: 100,
+  minQuantity: 10,
+  quantityStep: 1,
 
   portfolioTitle: "Естетика твого бренду",
   portfolioText: "Подивись, як брендована вода може вписуватися в різні формати бізнесу.",
@@ -417,13 +421,45 @@ const SITE = {
 function setText(id, val){const el=document.getElementById(id); if(el) el.innerHTML=val;}
 function setValue(id, val){const el=document.getElementById(id); if(el) el.value=val;}
 
+function normalizeOptions(list, fallback){
+  if(!Array.isArray(list) || !list.length) return fallback;
+  const out=list.map(x=>{
+    if(Array.isArray(x)) return [String(x[0] ?? ""), Number(x[1] ?? 0)];
+    if(x && typeof x==="object") return [String(x.name ?? x.title ?? ""), Number(x.price ?? 0)];
+    return [String(x ?? ""), 0];
+  }).filter(x=>x[0]);
+  return out.length ? out : fallback;
+}
+function normalizeQuantity(value){
+  const min=Math.max(1,Number(SITE.minQuantity)||10);
+  const step=Math.max(1,Number(SITE.quantityStep)||1);
+  let q=parseInt(value,10);
+  if(!Number.isFinite(q)) q=min;
+  q=Math.max(min,q);
+  q=min + Math.ceil((q-min)/step)*step;
+  return q;
+}
+function formatHeroTitle(title){
+  const str=String(title||"");
+  if(/<span\b/i.test(str)) return str;
+  const m=str.match(/^(.*?)([^<>\s]+)(\s*)$/s);
+  if(!m) return str;
+  return m[1] + '<span>' + m[2] + '</span>' + m[3];
+}
+
 function init(){
+  SITE.minQuantity=Math.max(1,Number(SITE.minQuantity)||10);
+  SITE.quantityStep=Math.max(1,Number(SITE.quantityStep)||1);
+  SITE.waterOptions=normalizeOptions(SITE.waterOptions,[["Вода негазована 0,5 л",23],["Вода газована 0,5 л",23]]);
+  SITE.labelOptions=normalizeOptions(SITE.labelOptions,[["Базова етикетка",0],["Преміум етикетка + ₴2",2]]);
+  if(!Array.isArray(SITE.pills) || !SITE.pills.length) SITE.pills=["Для ресторанів","Для готелів","Офіси","Корпоративи","Подарунки"];
+  if(!Array.isArray(SITE.portfolio) || !SITE.portfolio.length) SITE.portfolio=[["Metallic Foil Edition","Преміум-акцент"],["Art Line Series","Корпоративний стиль"],["Noir Minimalist","Преміальний мінімалізм"]];
   setText("logo", SITE.logo + '<span>' + SITE.logoAccent + '</span>');
   setText("footerLogo", SITE.logo + '<span>' + SITE.logoAccent + '</span>');
   ["navAbout","navProcess","navPortfolio","navOrder","fAbout","fProcess","fPortfolio","fOrder"].forEach((id,i)=>{
     const v=[SITE.navAbout,SITE.navProcess,SITE.navPortfolio,SITE.navOrder][i%4]; setText(id,v);
   });
-  setText("heroBadge",SITE.heroBadge);setText("heroTitle",SITE.heroTitle);setText("heroText",SITE.heroText);
+  setText("heroBadge",SITE.heroBadge);setText("heroTitle",formatHeroTitle(SITE.heroTitle));setText("heroText",SITE.heroText);
   setText("heroOrderBtn",SITE.heroOrderBtn);setText("heroMoreBtn",SITE.heroMoreBtn);
   setText("stat1Value",SITE.stat1Value);setText("stat1Text",SITE.stat1Text);setText("stat2Value",SITE.stat2Value);setText("stat2Text",SITE.stat2Text);setText("stat3Value",SITE.stat3Value);setText("stat3Text",SITE.stat3Text);
   setText("aboutEyebrow",SITE.aboutEyebrow);setText("aboutTitle",SITE.aboutTitle);setText("aboutText",SITE.aboutText);
@@ -440,6 +476,13 @@ function init(){
 
   document.getElementById("heroImage").src=SITE.images.hero;
   document.getElementById("bottleImage").src=SITE.images.bottle;
+  const countEl=document.getElementById("count");
+  countEl.min=SITE.minQuantity;
+  countEl.step=SITE.quantityStep;
+  countEl.value=normalizeQuantity(countEl.value);
+  const modalQty=document.getElementById("formQuantity");
+  modalQty.min=SITE.minQuantity;
+  modalQty.step=SITE.quantityStep;
 
   const features=document.getElementById("features");
   SITE.features.forEach(x=>features.insertAdjacentHTML("beforeend",`<div class="card"><div class="icon">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p></div>`));
@@ -480,17 +523,29 @@ function openSocial(which){
   if(url) window.open(url,"_blank","noopener,noreferrer");
 }
 function recalc(){
-  const q=Math.max(SITE.minQuantity, parseInt(document.getElementById("count").value||500,10));
-  document.getElementById("count").value=Math.round(q/SITE.quantityStep)*SITE.quantityStep;
-  const total=q*(Number(SITE.waterOptions[document.getElementById("water").value][1])+Number(SITE.labelOptions[document.getElementById("labelType").value][1]));
+  const count=document.getElementById("count");
+  const q=normalizeQuantity(count.value||SITE.minQuantity);
+  count.value=q;
+  const wi=Math.min(Math.max(0,parseInt(document.getElementById("water").value||0,10)),SITE.waterOptions.length-1);
+  const li=Math.min(Math.max(0,parseInt(document.getElementById("labelType").value||0,10)),SITE.labelOptions.length-1);
+  const unit=Number(SITE.waterOptions[wi][1]||0)+Number(SITE.labelOptions[li][1]||0);
+  const total=q*unit;
   document.getElementById("price").textContent="₴"+total.toLocaleString("uk-UA");
   return total;
 }
-function openOrder(){
-  document.getElementById("formQuantity").value=document.getElementById("count").value;
+function syncOrderModal(){
+  const q=normalizeQuantity(document.getElementById("formQuantity").value);
+  document.getElementById("formQuantity").value=q;
+  document.getElementById("count").value=q;
+  const total=recalc();
+  document.getElementById("orderModalPrice").textContent="₴"+total.toLocaleString("uk-UA");
+  document.getElementById("formTotal").value="₴"+total.toLocaleString("uk-UA");
   document.getElementById("formWater").value=SITE.waterOptions[document.getElementById("water").value][0];
   document.getElementById("formLabel").value=SITE.labelOptions[document.getElementById("labelType").value][0];
-  document.getElementById("formTotal").value=document.getElementById("price").textContent;
+}
+function openOrder(){
+  document.getElementById("formQuantity").value=document.getElementById("count").value;
+  syncOrderModal();
   document.getElementById("orderSuccess").style.display="none";
   document.getElementById("orderError").style.display="none";
   document.getElementById("orderModal").classList.add("show");
@@ -531,12 +586,14 @@ document.getElementById("heroOrderBtn").onclick=openOrder;
 document.getElementById("orderBtn").onclick=openOrder;
 document.getElementById("partnerBtn").onclick=openPartner;
 document.getElementById("heroMoreBtn").onclick=()=>goToSection("process");
-document.getElementById("minus").onclick=()=>{document.getElementById("count").value=Math.max(SITE.minQuantity,parseInt(document.getElementById("count").value||500,10)-SITE.quantityStep);recalc();};
-document.getElementById("plus").onclick=()=>{document.getElementById("count").value=parseInt(document.getElementById("count").value||500,10)+SITE.quantityStep;recalc();};
+document.getElementById("minus").onclick=()=>{document.getElementById("count").value=normalizeQuantity(parseInt(document.getElementById("count").value||SITE.minQuantity,10)-SITE.quantityStep);recalc();};
+document.getElementById("plus").onclick=()=>{document.getElementById("count").value=normalizeQuantity(parseInt(document.getElementById("count").value||SITE.minQuantity,10)+SITE.quantityStep);recalc();};
 document.getElementById("count").oninput=recalc;
 document.getElementById("water").onchange=recalc;
 document.getElementById("labelType").onchange=recalc;
-document.getElementById("orderForm").onsubmit=e=>{e.preventDefault();document.getElementById("formQuantity").value=document.getElementById("count").value;document.getElementById("formWater").value=SITE.waterOptions[document.getElementById("water").value][0];document.getElementById("formLabel").value=SITE.labelOptions[document.getElementById("labelType").value][0];document.getElementById("formTotal").value=document.getElementById("price").textContent;submitViaHiddenFrame(e.target,document.getElementById("orderSuccess"),document.getElementById("orderError"));};
+document.getElementById("formQuantity").oninput=syncOrderModal;
+document.getElementById("formQuantity").onchange=syncOrderModal;
+document.getElementById("orderForm").onsubmit=e=>{e.preventDefault();syncOrderModal();document.getElementById("formQuantity").value=normalizeQuantity(document.getElementById("formQuantity").value);submitViaHiddenFrame(e.target,document.getElementById("orderSuccess"),document.getElementById("orderError"));};
 document.getElementById("partnerForm").onsubmit=e=>{e.preventDefault();submitViaHiddenFrame(e.target,document.getElementById("partnerSuccess"),document.getElementById("partnerError"));};
 document.getElementById("burger").onclick=()=>{const m=document.getElementById("mainMenu");const open=m.dataset.open==="1";if(open){m.style.display="none";m.dataset.open="0"}else{m.style.display="flex";m.style.position="absolute";m.style.top="68px";m.style.left="0";m.style.right="0";m.style.padding="16px";m.style.background="#17191c";m.style.flexDirection="column";m.dataset.open="1"}};
 document.getElementById("hiddenSubmitFrame").onload=()=>{};
