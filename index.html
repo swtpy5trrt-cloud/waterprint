@@ -451,6 +451,14 @@ function init(){
   SITE.quantityStep=Math.max(1,Number(SITE.quantityStep)||1);
   SITE.waterOptions=normalizeOptions(SITE.waterOptions,[["Вода негазована 0,5 л",23],["Вода газована 0,5 л",23]]);
   SITE.labelOptions=normalizeOptions(SITE.labelOptions,[["Базова етикетка",0],["Преміум етикетка + ₴2",2]]);
+  // Apple Pay отключён — на сайте остаются только два способа оплаты.
+  const paymentSource=Array.isArray(SITE.paymentOptions)?SITE.paymentOptions:[];
+  const cashPay=paymentSource.find(x=>Array.isArray(x)&&String(x[0]).toLowerCase()==="cash");
+  const cardPay=paymentSource.find(x=>Array.isArray(x)&&String(x[0]).toLowerCase()==="card");
+  SITE.paymentOptions=[
+    ["cash",cashPay&&cashPay[1]?cashPay[1]:"Наложний платіж"],
+    ["card",cardPay&&cardPay[1]?cardPay[1]:"Карта онлайн"]
+  ];
   if(!Array.isArray(SITE.features) || !SITE.features.length) SITE.features=[["◎","Для бізнесу","Для ресторанів, готелів, салонів та подій, де важлива увага до деталей."],["★","Власний бренд","Пляшка допомагає підсилити впізнаваність і запам’ятатися клієнту."],["M","Для подарунків","Стильне брендування для клієнтів, партнерів та корпоративних подій."],["↗","Для заходів","Персоналізована вода робить подію цілісною та помітною."]];
   if(!Array.isArray(SITE.steps) || !SITE.steps.length) SITE.steps=[["01","Обираєш воду","Обираємо формат пляшки, об’єм та кількість під твою задачу."],["02","Завантажуєш дизайн","Надсилаєш готовий макет або описуєш ідею — допоможемо з дизайном."],["03","Ми створюємо етикетку","Готуємо макет, друк і погоджуємо результат перед виробництвом."],["04","Отримуєш готову воду","Виробництво, пакування та передача готового замовлення."]];
   if(!Array.isArray(SITE.pills) || !SITE.pills.length) SITE.pills=["Для ресторанів","Для готелів","Офіси","Корпоративи","Подарунки"];
@@ -502,7 +510,7 @@ function init(){
   const pills=document.getElementById("pills"); SITE.pills.forEach(x=>pills.insertAdjacentHTML("beforeend",`<span class="pill">${x}</span>`));
 
   const po=document.getElementById("paymentOptions");
-  SITE.paymentOptions.forEach((x,i)=>po.insertAdjacentHTML("beforeend",`<label class="payOption ${i===0?'active':''}"><input type="radio" name="payPick" value="${x[0]}" ${i===0?'checked':''}>${x[1]}</label>`));
+  SITE.paymentOptions.slice(0,2).forEach((x,i)=>po.insertAdjacentHTML("beforeend",`<label class="payOption ${i===0?'active':''}"><input type="radio" name="payPick" value="${x[0]}" ${i===0?'checked':''}>${x[1]}</label>`));
   document.querySelectorAll('input[name="payPick"]').forEach(r=>r.addEventListener("change",()=>{document.querySelectorAll(".payOption").forEach(el=>el.classList.remove("active")); r.parentElement.classList.add("active"); document.getElementById("payment").value=r.value;}));
   document.getElementById("payment").value=SITE.paymentOptions[0][0];
 
