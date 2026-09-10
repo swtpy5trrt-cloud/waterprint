@@ -292,10 +292,9 @@ const SITE = {
   portfolioDriveUrl: "https://drive.google.com/drive/folders/1gEUOK2IjGxIpvm-nvErTTkcyPrf4krQ1?usp=sharing",
 
   // Ссылки соцсетей можно заменить через админку.
-  instagramUrl: "https://www.instagram.com/waterprint.ua?stkn=NnUzd2U1ZGJmcmZ2&utm_source=qr",
+  instagramUrl: "",
   facebookUrl: "",
-  TikTokUrl:"",
- 
+
   // 2) Название и основные тексты
   logo: "WaterPrint",
   logoAccent: "Print",
@@ -346,15 +345,15 @@ const SITE = {
   totalText: "Орієнтовна ціна",
   orderBtn: "Надіслати запит",
 
-  waterOptions: [
-    ["Вода негазована 0,5 л", 23],
-    ["Вода слабогазована 0,5 л", ],
-    ["Вода газована 0,5 л", 23]
-  ],
-  labelOptions: [
-    ["Базова етикетка", 0],
-    ["Преміум етикетка + ₴2", 2]
-  ],
+ waterOptions: [
+  ["Вода без газа", 23],
+  ["Вода слабогазированная", 23],
+  ["Вода сильногазированная", 23]
+],
+ labelOptions: [
+  ["Глянцевая", 0],
+  ["Матовая", 0]
+],
   minQuantity: 10,
   quantityStep: 1,
 
@@ -403,7 +402,6 @@ const SITE = {
   paymentOptions: [
     ["cash","Наложний платіж"],
     ["card","Карта онлайн"],
-  
   ],
   submitOrder: "Підтвердити замовлення",
   partnerFormTitle: "Стати партнером",
@@ -607,10 +605,14 @@ async function loadRemoteConfig(){
     init();
     return;
   }
+
+  // ВАЖНО: сайт не запускается со старыми данными из HTML.
+  // Сначала получаем актуальную конфигурацию из админки, затем рендерим страницу.
   let done = false;
   const finish = (cfg)=>{
     if(done) return;
     done = true;
+
     if(cfg && typeof cfg === "object"){
       Object.keys(cfg).forEach(k=>{
         if(cfg[k] === undefined || cfg[k] === null) return;
@@ -619,21 +621,39 @@ async function loadRemoteConfig(){
         } else if(/^image_(hero|bottle|card1|card2|card3)$/.test(k) && typeof cfg[k] === "string" && cfg[k]) {
           const slot = k.slice(6);
           SITE.images = SITE.images || {};
+          // Уникальный параметр гарантирует получение свежей фотографии из Drive.
           SITE.images[slot] = cfg[k] + (cfg[k].includes("?") ? "&" : "?") + "v=" + Date.now();
         } else {
           SITE[k] = cfg[k];
         }
       });
     }
+
     init();
   };
-  const cb = "__wp_cfg_" + Date.now();
-  window[cb] = function(cfg){ finish(cfg); try{delete window[cb]}catch(e){} };
+
+  const cb = "__wp_cfg_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+  window[cb] = function(cfg){
+    finish(cfg);
+    try{ delete window[cb]; }catch(e){}
+  };
+
   const s = document.createElement("script");
-  s.src = url + (url.includes("?") ? "&" : "?") + "action=config&callback=" + cb;
-  s.onerror = ()=>finish(null);
+  s.src = url + (url.includes("?") ? "&" : "?") + "action=config&callback=" + cb + "&_=" + Date.now();
+  s.onerror = ()=>{
+    // Не показываем устаревшую HTML-версию. Сообщаем об ошибке подключения.
+    if(done) return;
+    done = true;
+    document.body.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-family:Arial,sans-serif;text-align:center;background:#fff;color:#111"><div><h2 style="margin:0 0 10px">WaterPrint</h2><p style="margin:0 0 16px">Не удалось загрузить актуальные настройки сайта.</p><button onclick="location.reload()" style="border:0;border-radius:12px;padding:12px 20px;background:#111;color:#fff;cursor:pointer">Обновить страницу</button></div></div>';
+  };
   document.head.appendChild(s);
-  setTimeout(()=>finish(null),3500);
+
+  // Даём Apps Script достаточно времени. Старую версию сайта через несколько секунд НЕ запускаем.
+  setTimeout(()=>{
+    if(done) return;
+    done = true;
+    document.body.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-family:Arial,sans-serif;text-align:center;background:#fff;color:#111"><div><h2 style="margin:0 0 10px">WaterPrint</h2><p style="margin:0 0 16px">Сайт загружается дольше обычного. Попробуйте обновить страницу.</p><button onclick="location.reload()" style="border:0;border-radius:12px;padding:12px 20px;background:#111;color:#fff;cursor:pointer">Обновить страницу</button></div></div>';
+  },15000);
 }
 
 loadRemoteConfig();
