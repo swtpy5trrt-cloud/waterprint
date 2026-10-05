@@ -2,10 +2,7 @@
 <!doctype html>
 <html lang="uk">
 <head>
-<link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
-<link rel="shortcut icon" href="/favicon.ico">
-<link rel="apple-touch-icon" href="/favicon-192.png">
- <meta charset="utf-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WaterPrint — брендована вода</title>
 <style>
@@ -95,6 +92,18 @@ select:focus,.qtyInput:focus,.formInput:focus{border-color:#1698ff}
  .modalBox h3{font-size:23px}
  .formInput{height:46px}
 }
+/* WaterPrint AI Studio — additive feature */
+.aiHeroBtn{border-color:rgba(22,152,255,.35)!important;color:#8bd0ff!important;background:rgba(22,152,255,.08)!important}.aiHeroBtn:hover{background:rgba(22,152,255,.16)!important;color:#fff!important}
+.aiStudio{background:#f6f9fc;position:relative;overflow:hidden}.aiStudio:before{content:"";position:absolute;width:520px;height:520px;right:-220px;top:-240px;border-radius:50%;background:radial-gradient(circle,rgba(22,152,255,.12),transparent 68%);pointer-events:none}
+.aiIntro{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:28px}.aiIntro h2{font-size:clamp(32px,4vw,54px);line-height:1.03;letter-spacing:-.045em;margin:8px 0 12px;max-width:760px}.aiIntro h2 span{color:#1598ef}.aiIntro p{max-width:690px;color:#687481;font-size:15px;line-height:1.7;margin:0}.aiChip{white-space:nowrap;border:1px solid #dce7ef;background:#fff;padding:10px 14px;border-radius:999px;font-size:11px;font-weight:800;color:#198bd5;box-shadow:0 8px 22px rgba(18,34,50,.05)}
+.aiStudioGrid{display:grid;grid-template-columns:minmax(320px,.82fr) minmax(0,1.18fr);gap:20px;align-items:stretch}.aiPanel,.aiResults{background:#fff;border:1px solid #e3eaf0;border-radius:24px;box-shadow:0 18px 55px rgba(18,34,50,.07)}.aiPanel{padding:25px}.aiResults{padding:22px;min-height:600px}.aiPanelTitle{font-size:15px;font-weight:900;letter-spacing:-.01em;margin-bottom:20px}.aiPanelTitle span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:#11151a;color:#fff;font-size:10px;margin-right:9px}
+.aiLabel{display:block;font-size:11px;font-weight:850;color:#596572;margin:16px 0 8px}.aiChoices{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.aiChoice{border:1px solid #dfe6ec;background:#fff;border-radius:11px;padding:10px 8px;font-size:11px;font-weight:800;color:#697581;cursor:pointer}.aiChoice.active{border-color:#1598ef;background:#eef8ff;color:#0e83da;box-shadow:0 0 0 2px rgba(21,152,239,.08)}
+.aiUpload{display:flex;align-items:center;gap:12px;border:1px dashed #cbd7e0;border-radius:13px;padding:12px;cursor:pointer;background:#fbfdff}.aiUpload input{display:none}.aiUploadIcon{width:38px;height:38px;border-radius:11px;background:#eef8ff;color:#1598ef;display:grid;place-items:center;font-size:21px}.aiUpload b{display:block;font-size:12px;color:#25313b}.aiUpload small{display:block;color:#8a949d;font-size:10px;margin-top:3px}
+.aiInput{width:100%;border:1px solid #dfe6ec;background:#fbfcfd;border-radius:12px;padding:12px 13px;font:inherit;font-size:12px;outline:none}.aiInput:focus{border-color:#1598ef;box-shadow:0 0 0 3px rgba(21,152,239,.08)}.aiTextarea{min-height:105px;resize:vertical;line-height:1.5}.aiQuick{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 17px}.aiQuick button{border:1px solid #e2e8ed;background:#fff;border-radius:999px;padding:7px 9px;font-size:10px;color:#6d7882;cursor:pointer}.aiQuick button:hover{border-color:#1598ef;color:#1598ef}
+.aiGenerateBtn{width:100%;height:48px}.aiFineprint{font-size:9px;color:#929ba3;line-height:1.5;text-align:center;margin-top:9px}.aiStatus{min-height:18px;font-size:11px;color:#1598ef;text-align:center;margin-top:9px}.aiResultsHead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:15px}.aiResultsHead p{font-size:11px;color:#84909a;margin:0 0 0 39px}.aiAgain{border:1px solid #dce5eb;background:#fff;border-radius:999px;padding:9px 12px;font-size:10px;font-weight:800;color:#5e6a75;cursor:pointer;white-space:nowrap}
+.aiCards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.aiCard{border:1px solid #e1e8ee;border-radius:17px;overflow:hidden;background:#fff}.aiCard img{display:block;width:100%;aspect-ratio:1/1.12;object-fit:cover;background:#f3f6f8}.aiCardBody{padding:11px}.aiCardBody b{display:block;font-size:11px}.aiCardBody span{display:block;font-size:9px;color:#8a949d;margin-top:4px;line-height:1.4}.aiUse{width:100%;margin-top:9px;border:1px solid #dfe6ec;background:#fff;border-radius:9px;padding:8px;font-size:10px;font-weight:800;color:#1598ef;cursor:pointer}.aiUse:hover{background:#eef8ff}
+.aiEmpty{grid-column:1/-1;min-height:500px;border:1px dashed #d5e0e8;border-radius:18px;background:linear-gradient(145deg,#fbfdff,#f4f8fb);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}.aiEmptyBottle{width:92px;height:160px;border:2px solid #c9d6df;border-radius:28px 28px 22px 22px;margin-bottom:22px;display:grid;place-items:center;color:#1598ef;font-size:34px;position:relative}.aiEmptyBottle:before{content:"";position:absolute;top:-17px;width:28px;height:20px;border:2px solid #c9d6df;border-bottom:0;border-radius:8px 8px 0 0}.aiEmpty b{font-size:14px;margin-bottom:6px}.aiEmpty span{font-size:11px;color:#8b969f;max-width:300px;line-height:1.5}
+@media(max-width:850px){.aiIntro{display:block}.aiChip{display:inline-block;margin-top:15px}.aiStudioGrid{grid-template-columns:1fr}.aiCards{grid-template-columns:1fr}.aiResults{min-height:auto}.aiEmpty{min-height:360px}}
 </style>
 </head>
 <body>
@@ -121,6 +130,7 @@ select:focus,.qtyInput:focus,.formInput:focus{border-color:#1698ff}
    <div class="actions">
     <button class="btn primary" id="heroOrderBtn"></button>
     <button class="btn ghost" id="heroMoreBtn"></button>
+    <button class="btn aiHeroBtn" type="button" onclick="goToSection('aiStudio')">✦ Побачити, як це буде виглядати</button>
    </div>
    <div class="stats">
     <div class="stat"><b id="stat1Value"></b><small id="stat1Text"></small></div>
@@ -146,6 +156,58 @@ select:focus,.qtyInput:focus,.formInput:focus{border-color:#1698ff}
  </div>
 </section>
 
+<section id="aiStudio" class="section aiStudio">
+ <div class="container">
+  <div class="aiIntro">
+   <div>
+    <div class="eyebrow">WATERPRINT AI STUDIO</div>
+    <h2>Хочеш побачити, <span>як виглядатиме</span> твоя пляшка?</h2>
+    <p>Завантаж логотип, опиши ідею — ми покажемо три різні концепції брендування прямо на пляшці.</p>
+   </div>
+   <div class="aiChip">3 концепції за один запит</div>
+  </div>
+  <div class="aiStudioGrid">
+   <div class="aiPanel">
+    <div class="aiPanelTitle"><span>01</span> Створи концепцію</div>
+    <label class="aiLabel">Формат етикетки</label>
+    <div class="aiChoices" id="aiFormatChoices">
+      <button type="button" class="aiChoice active" data-format="wrap">Wrap / по колу</button>
+      <button type="button" class="aiChoice" data-format="horizontal">Горизонтальна</button>
+      <button type="button" class="aiChoice" data-format="vertical">Вертикальна</button>
+    </div>
+    <label class="aiLabel">Логотип</label>
+    <label class="aiUpload">
+      <input id="aiLogoFile" type="file" accept="image/png,image/jpeg,image/webp">
+      <span class="aiUploadIcon">＋</span>
+      <span><b id="aiLogoName">Завантажити логотип</b><small>PNG, JPG або WEBP</small></span>
+    </label>
+    <label class="aiLabel" for="aiLabelText">Текст на етикетці</label>
+    <input class="aiInput" id="aiLabelText" maxlength="180" placeholder="Наприклад: YOUR BRAND · PURE WATER">
+    <label class="aiLabel" for="aiStyle">Який стиль хочеш?</label>
+    <textarea class="aiInput aiTextarea" id="aiStyle" maxlength="700" placeholder="Наприклад: мінімалізм, білий матовий фон, тонкі чорні лінії, преміальна типографіка, один акцентний колір..."></textarea>
+    <div class="aiQuick">
+      <button type="button" data-style="Мінімалістичний luxury: багато повітря, чиста типографіка, стриманий преміум.">Minimal</button>
+      <button type="button" data-style="Сучасний fashion-style: смілива типографіка, editorial композиція, дорогий вигляд.">Fashion</button>
+      <button type="button" data-style="Преміальний corporate: строгий, технологічний, дуже чистий та впізнаваний.">Corporate</button>
+      <button type="button" data-style="Креативний art-direction: нестандартна композиція, але без втрати преміального вигляду.">Creative</button>
+    </div>
+    <button class="btn primary aiGenerateBtn" id="aiGenerateBtn" type="button">✦ Створити 3 варіанти</button>
+    <div class="aiStatus" id="aiStatus"></div>
+    <div class="aiFineprint">AI створює візуалізацію для попереднього вибору. Фінальна етикетка погоджується окремо.</div>
+   </div>
+   <div class="aiResults">
+    <div class="aiResultsHead">
+      <div><div class="aiPanelTitle"><span>02</span> Варіанти</div><p id="aiResultsText">Тут з'являться три концепції.</p></div>
+      <button type="button" class="aiAgain" id="aiAgainBtn" style="display:none">↻ Ще 3 варіанти</button>
+    </div>
+    <div class="aiCards" id="aiCards">
+      <div class="aiEmpty"><div class="aiEmptyBottle">◌</div><b>Твоя пляшка — твоя айдентика</b><span>Заповни форму зліва та натисни «Створити 3 варіанти».</span></div>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
 <section id="order" class="section white">
  <div class="container orderGrid">
   <div><img class="bottle" id="bottleImage" alt=""></div>
@@ -156,8 +218,7 @@ select:focus,.qtyInput:focus,.formInput:focus{border-color:#1698ff}
    <div class="field"><label id="waterLabel"></label><select id="water"></select></div>
    <div class="field"><label id="labelLabel"></label><select id="labelType"></select></div>
    <div class="field"><label id="countLabel"></label>
-    <div class="qtyRow"><button type="button" id="minus">−</button><input class="qtyInput" id="count" type="number" min="1" step="1" value="20" inputmode="numeric"><button type="button" id="plus">+</button></div>
-    <div class="minQtyWarning" id="countMinWarning" role="alert" style="display:none;color:#d93025;font-size:12px;margin-top:7px">Мінімальне замовлення — 20 пляшок</div>
+    <div class="qtyRow"><button type="button" id="minus">−</button><input class="qtyInput" id="count" type="number" min="10" step="1" value="10"><button type="button" id="plus">+</button></div>
    </div>
    <div class="total"><span id="totalText"></span><strong id="price"></strong></div>
    <button class="btn primary" style="width:100%" id="orderBtn"></button>
@@ -238,8 +299,7 @@ select:focus,.qtyInput:focus,.formInput:focus{border-color:#1698ff}
     <div class="formField"><label id="cityLabel"></label><input class="formInput" name="city" id="city"></div>
     <div class="formField">
      <label id="quantityLabel"></label>
-     <input class="formInput" name="quantity" id="formQuantity" type="number" min="1" step="1" value="20" inputmode="numeric">
-     <div class="minQtyWarning" id="formMinWarning" role="alert" style="display:none;color:#d93025;font-size:12px;margin-top:7px">Мінімальне замовлення — 20 пляшок</div>
+     <input class="formInput" name="quantity" id="formQuantity" type="number" min="10" step="1" value="10" inputmode="numeric">
     </div>
     <div class="formField full">
      <label id="paymentLabel"></label>
@@ -358,7 +418,7 @@ const SITE = {
     ["Базова етикетка", 0],
     ["Преміум етикетка + ₴2", 2]
   ],
-  minQuantity: 20,
+  minQuantity: 10,
   quantityStep: 1,
 
   portfolioTitle: "Естетика твого бренду",
@@ -402,10 +462,11 @@ const SITE = {
   cityLabel: "Місто",
   quantityLabel: "Кількість",
   paymentLabel: "Спосіб оплати",
-  paymentNote: "Онлайн-оплата буде доступна після підключення платіжного сервісу.",
+  paymentNote: "Карта та Apple Pay потребують підключеного платіжного сервісу. Тут ми вже збираємо вибір клієнта.",
   paymentOptions: [
-    ["cod","Наложний платіж"],
-    ["card","Карта онлайн"]
+    ["cash","Наложний платіж"],
+    ["card","Карта онлайн"],
+    ["apple","Apple Pay"]
   ],
   submitOrder: "Підтвердити замовлення",
   partnerFormTitle: "Стати партнером",
@@ -435,22 +496,13 @@ function normalizeOptions(list, fallback){
   return out.length ? out : fallback;
 }
 function normalizeQuantity(value){
-  // Не подгоняем ввод к минимуму: клиент может ввести любое число.
-  const q=parseInt(value,10);
-  return Number.isFinite(q) && q >= 0 ? q : 0;
-}
-function quantityIsValid(value){
-  const min=Math.max(20,Number(SITE.minQuantity)||20);
-  const q=parseInt(value,10);
-  return Number.isFinite(q) && q >= min;
-}
-function updateQuantityWarning(value, warningId){
-  const warning=document.getElementById(warningId);
-  if(!warning) return quantityIsValid(value);
-  const valid=quantityIsValid(value);
-  warning.textContent='Мінімальне замовлення — '+Math.max(20,Number(SITE.minQuantity)||20)+' пляшок';
-  warning.style.display=valid?'none':'block';
-  return valid;
+  const min=Math.max(1,Number(SITE.minQuantity)||10);
+  const step=Math.max(1,Number(SITE.quantityStep)||1);
+  let q=parseInt(value,10);
+  if(!Number.isFinite(q)) q=min;
+  q=Math.max(min,q);
+  q=min + Math.ceil((q-min)/step)*step;
+  return q;
 }
 function formatHeroTitle(title){
   const str=String(title||"");
@@ -460,8 +512,39 @@ function formatHeroTitle(title){
   return m[1] + '<span>' + m[2] + '</span>' + m[3];
 }
 
+async function fileToDataUrl(file){
+  return await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result||""));r.onerror=reject;r.readAsDataURL(file);});
+}
+function setupAIStudio(){
+  document.querySelectorAll(".aiChoice").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".aiChoice").forEach(x=>x.classList.remove("active"));btn.classList.add("active");}));
+  document.querySelectorAll(".aiQuick button").forEach(btn=>btn.addEventListener("click",()=>{document.getElementById("aiStyle").value=btn.dataset.style||"";}));
+  document.getElementById("aiLogoFile").addEventListener("change",()=>{const f=document.getElementById("aiLogoFile").files?.[0];document.getElementById("aiLogoName").textContent=f?f.name:"Завантажити логотип";});
+  document.getElementById("aiGenerateBtn").addEventListener("click",generateAIConcepts);
+  document.getElementById("aiAgainBtn").addEventListener("click",generateAIConcepts);
+}
+async function generateAIConcepts(){
+  const btn=document.getElementById("aiGenerateBtn"),again=document.getElementById("aiAgainBtn"),status=document.getElementById("aiStatus"),cards=document.getElementById("aiCards");
+  const format=document.querySelector(".aiChoice.active")?.dataset.format||"wrap",text=document.getElementById("aiLabelText").value.trim(),style=document.getElementById("aiStyle").value.trim(),logoFile=document.getElementById("aiLogoFile").files?.[0];
+  if(!SITE.backendUrl||SITE.backendUrl.includes("PASTE_YOUR_")){status.textContent="AI поки не підключено до сервера.";return;}
+  btn.disabled=true;again.disabled=true;btn.textContent="Створюємо 3 концепції…";status.textContent="AI працює. Це може зайняти до 2 хвилин.";
+  cards.innerHTML='<div class="aiEmpty"><b>Створюємо твої концепції…</b><span>Зберігаємо форму пляшки та готуємо три різні art-direction.</span></div>';
+  try{
+    const logoData=logoFile?await fileToDataUrl(logoFile):"";
+    const res=await fetch(SITE.backendUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"generateLabel",bottleImage:String(SITE.images.bottle||""),logoImage:logoData,labelText:text,labelFormat:format,style:style})});
+    const data=await res.json(); if(!data.ok)throw new Error(data.error||"Не вдалося створити дизайн.");
+    cards.innerHTML="";
+    (data.images||[]).forEach((src,i)=>{const card=document.createElement("div");card.className="aiCard";card.innerHTML='<img src="data:image/jpeg;base64,'+src+'" alt="AI concept '+(i+1)+'"><div class="aiCardBody"><b>Концепція '+(i+1)+'</b><span>AI-візуалізація WaterPrint</span><button type="button" class="aiUse">Вибрати цей варіант</button></div>';card.querySelector(".aiUse").addEventListener("click",()=>selectAIConcept(src,i+1));cards.appendChild(card);});
+    document.getElementById("aiResultsText").textContent="Ось три різні напрямки. Обери той, який хочеш допрацювати.";again.style.display="inline-block";status.textContent="Готово ✦";
+  }catch(err){cards.innerHTML='<div class="aiEmpty"><b>Не вдалося створити візуалізацію</b><span>'+String(err.message||err)+'</span></div>';status.textContent="Перевір підключення AI в Apps Script.";}
+  finally{btn.disabled=false;again.disabled=false;btn.textContent="✦ Створити 3 варіанти";}
+}
+function selectAIConcept(src,index){
+  const modal=document.createElement("div");modal.className="modal show";modal.innerHTML='<div class="modalBox" style="max-width:720px"><button class="close" type="button">✕</button><h3>Концепція '+index+'</h3><p class="modalSub">Цей варіант можна взяти за основу для фінальної етикетки.</p><img src="data:image/jpeg;base64,'+src+'" style="width:100%;border-radius:16px;display:block;margin:12px 0"><button class="btn primary" type="button" style="width:100%">Взяти за основу</button></div>';document.body.appendChild(modal);
+  modal.querySelector(".close").onclick=()=>modal.remove();modal.querySelector(".primary").onclick=()=>{document.getElementById("aiResultsText").textContent="Вибрана концепція "+index+". Менеджер може допрацювати її до фінального макета.";modal.remove();};
+}
+
 function init(){
-  SITE.minQuantity=Math.max(20,Number(SITE.minQuantity)||20);
+  SITE.minQuantity=Math.max(1,Number(SITE.minQuantity)||10);
   SITE.quantityStep=Math.max(1,Number(SITE.quantityStep)||1);
   SITE.waterOptions=normalizeOptions(SITE.waterOptions,[["Вода негазована 0,5 л",23],["Вода газована 0,5 л",23]]);
   SITE.labelOptions=normalizeOptions(SITE.labelOptions,[["Базова етикетка",0],["Преміум етикетка + ₴2",2]]);
@@ -490,12 +573,12 @@ function init(){
   document.getElementById("heroImage").src=SITE.images.hero;
   document.getElementById("bottleImage").src=SITE.images.bottle;
   const countEl=document.getElementById("count");
-  countEl.min=1;
-  countEl.step=1;
-  countEl.value=String(SITE.minQuantity);
+  countEl.min=SITE.minQuantity;
+  countEl.step=SITE.quantityStep;
+  countEl.value=normalizeQuantity(countEl.value);
   const modalQty=document.getElementById("formQuantity");
-  modalQty.min=1;
-  modalQty.step=1;
+  modalQty.min=SITE.minQuantity;
+  modalQty.step=SITE.quantityStep;
 
   const features=document.getElementById("features");
   SITE.features.forEach(x=>features.insertAdjacentHTML("beforeend",`<div class="card"><div class="icon">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p></div>`));
@@ -519,6 +602,7 @@ function init(){
   document.getElementById("payment").value=SITE.paymentOptions[0][0];
 
   recalc();
+  setupAIStudio();
 }
 
 function goToSection(id){
@@ -537,8 +621,8 @@ function openSocial(which){
 }
 function recalc(){
   const count=document.getElementById("count");
-  const q=normalizeQuantity(count.value);
-  updateQuantityWarning(count.value,"countMinWarning");
+  const q=normalizeQuantity(count.value||SITE.minQuantity);
+  count.value=q;
   const wi=Math.min(Math.max(0,parseInt(document.getElementById("water").value||0,10)),SITE.waterOptions.length-1);
   const li=Math.min(Math.max(0,parseInt(document.getElementById("labelType").value||0,10)),SITE.labelOptions.length-1);
   const unit=Number(SITE.waterOptions[wi][1]||0)+Number(SITE.labelOptions[li][1]||0);
@@ -547,20 +631,14 @@ function recalc(){
   return total;
 }
 function syncOrderModal(){
-  const qty=document.getElementById("formQuantity");
-  const raw=qty.value;
-  const q=normalizeQuantity(raw);
-  document.getElementById("count").value=raw;
-  updateQuantityWarning(raw,"formMinWarning");
-  recalc();
-  const wi=Math.min(Math.max(0,parseInt(document.getElementById("water").value||0,10)),SITE.waterOptions.length-1);
-  const li=Math.min(Math.max(0,parseInt(document.getElementById("labelType").value||0,10)),SITE.labelOptions.length-1);
-  const unit=Number(SITE.waterOptions[wi][1]||0)+Number(SITE.labelOptions[li][1]||0);
-  const total=q*unit;
+  const q=normalizeQuantity(document.getElementById("formQuantity").value);
+  document.getElementById("formQuantity").value=q;
+  document.getElementById("count").value=q;
+  const total=recalc();
   document.getElementById("orderModalPrice").textContent="₴"+total.toLocaleString("uk-UA");
   document.getElementById("formTotal").value="₴"+total.toLocaleString("uk-UA");
-  document.getElementById("formWater").value=SITE.waterOptions[wi][0];
-  document.getElementById("formLabel").value=SITE.labelOptions[li][0];
+  document.getElementById("formWater").value=SITE.waterOptions[document.getElementById("water").value][0];
+  document.getElementById("formLabel").value=SITE.labelOptions[document.getElementById("labelType").value][0];
 }
 function openOrder(){
   document.getElementById("formQuantity").value=document.getElementById("count").value;
@@ -598,29 +676,21 @@ function submitViaHiddenFrame(form, successEl, errorEl){
   form.action=SITE.backendUrl;
   form.method="POST";
   form.submit();
-  setTimeout(()=>{ form.reset(); closeModal(form.id === "orderForm" ? "orderModal" : "partnerModal"); successEl.style.display="none"; showSuccessToast(form.id === "orderForm" ? "Замовлення успішно оформлено! Дякуємо! 🎉" : "Заявку на партнерство успішно надіслано! Дякуємо! 🤝"); },900);
+  setTimeout(()=>{ form.reset(); closeModal(form.id === "orderForm" ? "orderModal" : "partnerModal"); successEl.style.display="none"; showSuccessToast(form.id === "orderForm" ? "Заказ успешно оформлен! 🎉" : "Заявка на партнёрство успешно отправлена! 🤝"); },900);
 }
 
 document.getElementById("heroOrderBtn").onclick=openOrder;
 document.getElementById("orderBtn").onclick=openOrder;
 document.getElementById("partnerBtn").onclick=openPartner;
 document.getElementById("heroMoreBtn").onclick=()=>goToSection("process");
-document.getElementById("minus").onclick=()=>{const el=document.getElementById("count");el.value=Math.max(0,(parseInt(el.value,10)||0)-1);recalc();};
-document.getElementById("plus").onclick=()=>{const el=document.getElementById("count");el.value=(parseInt(el.value,10)||0)+1;recalc();};
+document.getElementById("minus").onclick=()=>{document.getElementById("count").value=normalizeQuantity(parseInt(document.getElementById("count").value||SITE.minQuantity,10)-SITE.quantityStep);recalc();};
+document.getElementById("plus").onclick=()=>{document.getElementById("count").value=normalizeQuantity(parseInt(document.getElementById("count").value||SITE.minQuantity,10)+SITE.quantityStep);recalc();};
 document.getElementById("count").oninput=recalc;
 document.getElementById("water").onchange=recalc;
 document.getElementById("labelType").onchange=recalc;
 document.getElementById("formQuantity").oninput=syncOrderModal;
 document.getElementById("formQuantity").onchange=syncOrderModal;
-document.getElementById("orderForm").onsubmit=e=>{
-  e.preventDefault();
-  syncOrderModal();
-  if(!updateQuantityWarning(document.getElementById("formQuantity").value,"formMinWarning")){
-    document.getElementById("formQuantity").focus();
-    return;
-  }
-  submitViaHiddenFrame(e.target,document.getElementById("orderSuccess"),document.getElementById("orderError"));
-};
+document.getElementById("orderForm").onsubmit=e=>{e.preventDefault();syncOrderModal();document.getElementById("formQuantity").value=normalizeQuantity(document.getElementById("formQuantity").value);submitViaHiddenFrame(e.target,document.getElementById("orderSuccess"),document.getElementById("orderError"));};
 document.getElementById("partnerForm").onsubmit=e=>{e.preventDefault();submitViaHiddenFrame(e.target,document.getElementById("partnerSuccess"),document.getElementById("partnerError"));};
 document.getElementById("burger").onclick=()=>{const m=document.getElementById("mainMenu");const open=m.dataset.open==="1";if(open){m.style.display="none";m.dataset.open="0"}else{m.style.display="flex";m.style.position="absolute";m.style.top="68px";m.style.left="0";m.style.right="0";m.style.padding="16px";m.style.background="#17191c";m.style.flexDirection="column";m.dataset.open="1"}};
 document.getElementById("hiddenSubmitFrame").onload=()=>{};
